@@ -1,2 +1,2 @@
-# hazk_ma3na
-simple application devoloped by flutter And it was sold to company taht gives rafle cards with numbers and announcing a list of random winners.
+# kids_learning_game
+kids game aim to help kids to learn Arabic language

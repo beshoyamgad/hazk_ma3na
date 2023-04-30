@@ -1,0 +1,881 @@
+
+import 'package:flutter/material.dart';
+import 'dart:math';
+import 'dart:async';
+import 'firstscreen.dart';
+import 'secondscreen.dart';
+import 'winners.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+
+  runApp(RandomApp());
+}
+class RandomApp extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+
+    return MaterialApp(
+
+      debugShowCheckedModeBanner: false,
+      home:DefaultTabController(length: 2,
+          child:  Scaffold(
+           // resizeToAvoidBottomInset: bool.fromEnvironment(false),
+            resizeToAvoidBottomInset: false,
+            appBar: AppBar(
+              title: Center(child: Text('·⁄»… ÕŸﬂ „⁄‰«')),
+
+              bottom: TabBar(
+
+
+                  tabs: <Widget>
+              [
+                    Tab(text:'«·”Õ»'),
+                    Tab(text:'«·›«∆“Ì‰'),
+
+                  ]
+              ),
+            ),
+            body: TabBarView(
+                children:<Widget>[
+                  secondscreen(),
+                  thirdscreen(
+
+                  )
+
+
+                ]
+            ),
+
+          )
+      )
+    );
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+//void main() => runApp(RandomApp());
+var win=[];
+class secondscreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: DemoPage(),
+    );
+  }
+}
+
+class DemoPage extends StatefulWidget {
+  @override
+  _DemoPageState createState() => _DemoPageState();
+}
+
+class _DemoPageState extends State<DemoPage> {
+  TextStyle text = TextStyle(fontSize: 30);
+  static int x;
+  int min =0;
+  int temp;
+  int max=99;
+  int rep=1;
+  int number = 0;
+  // int _counter = 10;
+  Timer _timer;
+  Timer _timer2;
+  /*
+  var colors=[
+    Colors.amber,
+    Colors.blue,
+    Colors.yellow,
+    Colors.green,
+    Colors.red,
+    Colors.orange,
+    //Colors.black87,
+    Colors.brown,
+    Colors.greenAccent,
+    Colors.indigo,
+    Colors.purple,
+    Colors.pink.shade600,
+    Colors.pink.shade100,
+    Colors.pink.shade900,
+    Colors.red.shade200,
+    Colors.red.shade400,
+    Colors.redAccent.shade400,
+    Colors.deepOrange.shade400,
+    Colors.deepOrange.shade600,
+    Colors.grey.shade400,
+    Colors.blueGrey.shade600,
+    Colors.blueGrey.shade900,
+    Colors.deepPurple.shade200,
+    Colors.deepPurple.shade300,
+    Colors.cyanAccent.shade200,
+    Colors.cyanAccent.shade700,
+    Colors.teal.shade700,
+    Colors.greenAccent,
+    Colors.greenAccent.shade700,
+    Colors.lightGreenAccent
+
+
+
+
+
+
+
+  ];*/
+  var colors=[
+    Colors.amber,
+    //Colors.black,
+    Colors.blue,
+    Colors.yellow,
+    Colors.green,
+    Colors.red,
+    Colors.pink,
+    Colors.orange,
+
+
+
+  ];
+  var current= Colors.pink;
+
+  setRandomColor(){
+    var rnd=Random().nextInt(colors.length);
+    setState((){
+      current=colors[rnd];
+
+
+    });
+  }
+  TextEditingController minController = TextEditingController();
+  TextEditingController maxController = TextEditingController();
+  TextEditingController repController = TextEditingController();
+  @override
+  Widget build(BuildContext context) {
+
+
+    // number=GenrateNumber(min:1,max: 100);
+    List li =intialize_list(min: min,max:max);
+    int index = 99;
+    int indexx=rep;
+    String value = "";
+
+
+
+    void _startTimer2(List winners,int count) {
+      index = 99;
+      li=intialize_list(min: min,max:max);
+      if (_timer2 != null) {
+        _timer2.cancel();
+      }
+
+      _timer2 = Timer.periodic(Duration(milliseconds: 30 ), (timer) {
+        setState(() {
+          if (index > 5) {
+            number=li[index];
+           // setRandomColor();
+            //  print(number);
+            index--;
+          }
+          else {
+            _timer2.cancel();
+            _timer2 = Timer.periodic(Duration(seconds: 1 ), (timer) {
+              setState(() {
+                if (index >= 0) {
+                //  print("0");
+                  number=li[index];
+                 // setRandomColor();
+                  //  print(number);
+                  index--;
+                } else {
+                  number=winners[count];
+                  _timer2.cancel();
+
+                  print(number);
+
+                  win.add(number);
+                  //  win.add(li[0]);
+                  // print(li[0]);
+
+                    setRandomColor();
+
+
+
+
+
+                  //setRandomColor();
+
+                  Fluttertoast.showToast(msg:" $number... „»—Êﬂ ·ﬁœ ›“  ›Ì ·⁄»… ÕŸﬂ „⁄‰«  ",
+                    backgroundColor: Colors.red,
+                    textColor: Colors.white,
+                    fontSize: 20 ,
+                    gravity: ToastGravity.BOTTOM,
+                    toastLength: Toast.LENGTH_LONG,
+
+
+                  );
+
+                }
+              });
+            });
+          }
+
+
+        });
+      });
+
+    }
+    void _startTimer(int rep) {
+      List winners=Winners(min: min,max:max,rep:rep);
+      int count=rep-1;
+      print(winners);
+      index = 149;
+      indexx=rep;
+      li=intialize_list(min: min,max:max);
+      if (_timer != null) {
+        print("timer!=null");
+        // print(rep);
+        _timer.cancel();
+      }
+
+      _startTimer2(winners,count);
+
+      count--;
+      //_startTimer2();
+      _timer = Timer.periodic(Duration(seconds: 15 ), (timer) {
+        setState(() {
+          if (indexx >= 2) {
+
+            indexx--;
+            //print(indexx);
+            _startTimer2(winners,count);
+
+            count--;
+
+
+
+
+          } else {
+
+            _timer.cancel();
+            print(win);
+
+
+          }
+        });
+      });
+    }
+
+
+
+
+
+
+
+
+
+    /*
+    *
+
+/*
+
+    // number=GenrateNumber(min:1,max: 100);
+    List li =intialize_list(min: min,max:max);
+    int index = 49;
+    int indexx=rep;
+    String value = "";
+int count=5;
+
+
+
+    void _startTimer2(List winner,int count) {
+      index = 49;
+      count=count;
+      li=intialize_list(min: min,max:max);
+      if (_timer2 != null) {
+        _timer2.cancel();
+      }
+
+      _timer2 = Timer.periodic(Duration(milliseconds: 30 ), (timer) {
+        setState(() {
+          if (index >= 0) {
+            number=li[index];
+            //  print(number);
+            index--;
+          } else {
+            _timer2.cancel();
+
+            number=winner[count];
+            win.add(number);
+            //  win.add(li[0]);
+            // print(li[0]);
+
+
+            setRandomColor();
+          }
+        });
+      });
+    }
+    void _startTimer(int rep) {
+      index = 49;
+      int count=4;
+      List winner=Winners(min:min,max:max,rep:rep);
+      print(winner);
+      indexx=rep;
+      li=intialize_list(min: min,max:max);
+      if (_timer != null) {
+        print("timer!=null");
+        // print(rep);
+        _timer.cancel();
+      }
+
+      _startTimer2(winner,count);
+      _timer = Timer.periodic(Duration(seconds: 5 ), (timer) {
+        setState(() {
+          if (indexx >= 2) {
+            indexx--;
+            count--;
+            //print(indexx);
+            _startTimer2(winner,count);
+
+
+
+
+          } else {
+
+            _timer.cancel();
+            print(win);
+
+
+          }
+        });
+      });
+    }
+
+
+
+
+
+
+
+
+
+
+ */
+
+    *
+    *
+    *
+    * */
+
+
+
+
+
+
+
+
+
+
+
+
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      backgroundColor: Colors.blueGrey,
+
+      body:  Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+
+
+            Expanded(
+              flex: 1,
+              child:
+              Container(
+
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image:  AssetImage('assets/img.jpg'),
+                        fit: BoxFit.cover)
+                ),),),
+            //DecorationPosition.background
+
+
+            Expanded(
+              flex: 2,
+              child:Container(
+                color: current,
+                child: Center(
+                  child: Text('$number',style: TextStyle(fontSize: 150,color:Colors.white)),
+                ),
+
+
+              ),
+            ),
+
+
+            Expanded(
+              flex: 1,
+              child:
+              Container(
+
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image:  AssetImage('assets/img2.jpg'),
+                        fit: BoxFit.cover)
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child:Container(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left:5),
+                          child: Column(
+                            // crossAxisAlignment: CrossAxisAlignment.stretch,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              //  Expanded(
+                              //   child:
+                              //  Container(
+                              //color:Colors.cyanAccent,
+                              //  child: Center(child: Text('beshoy amgad')),
+                              // ),
+
+
+                              //),
+                          Expanded(
+                          child:
+                          Container(
+                          //color:Colors.white,
+                          child: Container(
+                       // margin: EdgeInsets.only(bottom:5),
+                          width: 90,
+                          height: 22,
+
+                      ),
+                ),
+
+
+              ),
+
+                              Expanded(
+                                child:
+                                Container(
+                                  //color:Colors.white,
+                                  child: Container(
+                                    margin: EdgeInsets.only(bottom:5),
+                                    width: 90,
+                                    height: 22,
+                                    child: TextField (
+                                        cursorColor: Colors.red,
+                                        keyboardType: TextInputType.numberWithOptions(),
+                                        decoration: InputDecoration(
+                                            enabledBorder: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(20.0),
+                                              borderSide: BorderSide(
+                                                color: Colors.red,
+                                              ),
+                                            ),
+                                            focusedBorder: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(20.0),
+                                              borderSide: BorderSide(
+                                                color: Colors.red,
+                                              ),
+                                            ),
+                                            border: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(20.0),
+                                              borderSide: BorderSide(
+                                                color: Colors.red,
+                                              ),
+                                            ),
+
+                                            //    labelText: 'Min',
+                                            hintText: 'min',
+                                            hintStyle:TextStyle(
+                                              color: Colors.deepOrange,
+                                              // fontStyle: FontStyle.italic,
+                                            ),
+
+                                            contentPadding: EdgeInsets.fromLTRB(5, 5, 0, 0)
+
+
+                                        ),
+                                        controller: minController
+                                    ),
+                                  ),
+                                ),
+
+
+                              ),
+
+                              Expanded(
+                                child:
+                                Container(
+                                  //color:Colors.white,
+                                  child: Container(
+                                    margin: EdgeInsets.only(bottom:5),
+                                    width: 90,
+                                    height: 22,
+                                    child: TextField (
+                                        cursorColor: Colors.red,
+                                        keyboardType: TextInputType.numberWithOptions(),
+                                        decoration: InputDecoration(
+                                            enabledBorder: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(20.0),
+                                              borderSide: BorderSide(
+                                                color: Colors.red,
+                                              ),
+                                            ),
+                                            focusedBorder: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(20.0),
+                                              borderSide: BorderSide(
+                                                color: Colors.red,
+                                              ),
+                                            ),
+                                            border: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(20.0),
+                                              borderSide: BorderSide(
+                                                color: Colors.red,
+                                              ),
+                                            ),
+
+                                            //    labelText: 'Min',
+                                            hintText: 'max',
+                                            hintStyle:TextStyle(
+                                              color: Colors.deepOrange,
+                                              // fontStyle: FontStyle.italic,
+                                            ),
+
+                                            contentPadding: EdgeInsets.fromLTRB(5, 5, 0, 0)
+
+
+                                        ),
+                                        controller: maxController
+                                    ),
+                                  ),
+                                ),
+
+
+                              ),Expanded(
+                                child:
+                                Container(
+                                  margin: EdgeInsets.only(bottom:5),
+                                  width: 90,
+                                  height: 22,
+                                  //color:Colors.white,
+                                  child: TextField (
+                                      cursorColor: Colors.red,
+                                      keyboardType: TextInputType.numberWithOptions(),
+                                      decoration: InputDecoration(
+                                          enabledBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(20.0),
+                                            borderSide: BorderSide(
+                                              color: Colors.red,
+                                            ),
+                                          ),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(20.0),
+                                            borderSide: BorderSide(
+                                              color: Colors.red,
+                                            ),
+                                          ),
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(20.0),
+                                            borderSide: BorderSide(
+                                              color: Colors.red,
+                                            ),
+                                          ),
+
+                                          //    labelText: 'Min',
+                                          hintText: 'rep',
+                                          hintStyle:TextStyle(
+                                            color: Colors.deepOrange,
+                                            // fontStyle: FontStyle.italic,
+                                          ),
+
+                                          contentPadding: EdgeInsets.fromLTRB(5, 5, 0, 0)
+
+
+                                      ),
+                                      controller: repController
+                                  ),
+                                ),
+
+
+                              ),
+                              Expanded(
+                                child:
+                                Container(
+                                  margin: EdgeInsets.only(bottom:5),
+                                  //color:Colors.white,
+                                  child: Center(child:
+
+                                  Container(
+                                    //  width:180,
+                                    child: SizedBox(
+                                      //   width: 200,
+                                      //  height: 32,
+                                      child: FlatButton(
+                                        padding: EdgeInsets.symmetric(vertical: 5, horizontal: 50),
+                                        onPressed: () {
+                                          //print("RaisedButton");
+                                          win=[];
+
+                                          setState(() {
+
+                                            rep=int.parse(repController.text);
+                                            if(int.parse(minController.text)>int.parse(maxController.text))
+                                              {
+
+                                                max=int.parse(minController.text);
+                                                min=int.parse(maxController.text);
+                                              }
+                                            else
+                                              {
+                                                min=int.parse(minController.text);
+                                                max=int.parse(maxController.text);
+                                              }
+
+                                            if(rep>max-min+1)
+                                            {
+                                              rep=max-min+1;
+                                            }
+
+                                          });
+                                          //win=[];
+                                          _startTimer(rep);
+                                          // countrep();
+
+                                        },
+
+
+
+                                        color: Colors.deepOrangeAccent,
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.all(Radius.circular(30))),
+                                        child: Text(
+                                          "Randomize",
+                                          style: TextStyle(color: Colors.white),
+                                       //     MediaQuery.of(context).size.width
+
+                                        ),
+                                      ),
+                                    ),
+
+
+
+                                  )
+
+
+
+                                  ),
+                                ),
+
+
+                              ),
+
+
+
+                            ],
+
+                          ),
+                        ),
+
+                      ) ,
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child:Container(
+                        // color: Colors.black,
+
+                      ) ,
+
+                    )
+                  ],
+                ),
+
+
+
+
+
+              ),
+
+            ),
+
+          ]
+      ),
+    );
+  }
+  int GenrateNumber({ int min , int max}) =>
+      min + Random().nextInt(max-min+1);
+
+  List intialize_list({ int min , int max}) {
+    var list = new List();
+    for( var i = 0 ; i < 150; i++ ) {
+      list.add( min + Random().nextInt(max-min+1));
+
+    }
+    return list;
+  }
+
+
+
+
+}
+List Winners({ int min , int max,int rep}) {
+  var listw = [];
+  int randomnumber;
+
+  for( var i = 0 ; i < rep; i++ ) {
+    randomnumber=min + Random().nextInt(max-min+1);
+    if(! listw.contains(randomnumber))
+    {
+      listw.add(randomnumber );
+    }
+    else
+    {
+      i--;
+    }
+
+
+
+  }
+  return listw;
+
+}
+/*
+ */
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+
+class thirdscreen extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+
+    return MaterialApp(
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      home: ListViewDemo(),
+    );
+  }
+}
+
+class ListViewDemo extends StatefulWidget {
+  @override
+  _ListViewDemoState createState() => _ListViewDemoState();
+}
+
+class _ListViewDemoState extends State<ListViewDemo> {
+  var _items = List<ListItem>();
+ // var li=[1,2,3,4,5,6,7,8,9,10];
+
+  @override
+  void initState() {
+    super.initState();
+
+    for(var i=0;i<win.length;i++)
+    {
+
+      _items.add(ListItem(win[i]));
+    }
+
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var _screenWidth = MediaQuery.of(context).size.width;
+    var _itemCount = (_screenWidth / 150).ceil();
+    return Scaffold(
+
+      body: GridView.builder(
+          scrollDirection: Axis.vertical,
+          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent:150,
+              childAspectRatio: (_screenWidth / _itemCount) / 150),
+          itemBuilder: (BuildContext context, int index) {
+
+
+            return listItem(_items[index].num);
+
+          },
+          itemCount: _items.length),
+    );
+  }
+  var colors=[
+    Colors.amber,
+    //Colors.black,
+    Colors.blue,
+    Colors.yellow,
+    Colors.green,
+    Colors.red,
+    Colors.pink,
+    Colors.orange,
+
+
+
+  ];
+  var current= Colors.pink;
+  setRandomColor(){
+    var rnd=Random().nextInt(colors.length);
+
+    current=colors[rnd];
+
+
+
+    return current;
+  }
+  Widget listItem(int num) {
+    return Card(
+      color: setRandomColor(),
+      child: SizedBox(
+        height: 200,
+        width: 250,
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                '$num',
+                style: TextStyle(fontWeight: FontWeight.bold,fontSize: 40),
+              ),
+
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class ListItem {
+
+  int num;
+
+  ListItem(this.num);
+}
+
+
+
